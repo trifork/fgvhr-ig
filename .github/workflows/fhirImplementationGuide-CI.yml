@@ -23,7 +23,7 @@ on:
 env:
   REGISTRY: ghcr.io
   # The destination of the build artifact
-  CONTENT_PATH: ./F
+  CONTENT_PATH: ./
   IMAGE_NAME: ${{ github.repository }}
   TAG_PREFIX: "IG_"
   CONTAINER_DESCRIPTION: "Implementation Guide for FGVH"

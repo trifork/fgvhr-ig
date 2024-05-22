@@ -1,0 +1,35 @@
+name: Create a tag based on input
+description: Take multiple types of input, and set a single tag based on that.
+
+# https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
+inputs:
+  workflow-dispatch-tag:
+    description: "Tag from workflow-dispatch"
+    required: false
+    default: ""
+  git-tag:
+    description: "Tag from git"
+    required: false
+    default: ""
+  prefix:
+    description: "Prefix to remove"
+    required: false
+    default: ""
+
+outputs:
+  tag:
+    description: "A tag from one of the inputs"
+    value: ${{ steps.determine-tag.outputs.tag }}
+
+runs:
+  using: composite
+
+  steps:
+    - name: Detect tag
+      id: determine-tag
+      shell: bash
+      env:
+        WORKFLOW_TAG: ${{ inputs.workflow-dispatch-tag }}
+        GIT_TAG: ${{ inputs.git-tag }}
+        PREFIX: ${{ inputs.prefix }}
+      run: echo "tag=$(bash ./.github/actions/tag/get-version.sh)" >> $GITHUB_OUTPUT

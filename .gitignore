@@ -2,6 +2,9 @@
 Thumbs.db
 /fsh-generated
 /input-cache
+/input-cache/*
 /output
 /temp
 /template
+/nginx/logs/*
+!/**/.gitkeep

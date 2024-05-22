@@ -1,0 +1,131 @@
+name: FHIR Implementation Guide CI
+
+on:
+  workflow_dispatch: # enable manually running this workflow
+    inputs:
+      tag:
+        description: "Tag for workflow"
+        required: true
+        type: string
+        default: "x.y.z"
+
+  push:
+    tags:
+      - ig_*
+      - Ig_*
+      - IG_*
+    paths: 
+      - 'FHIR-Implementation-Guide/**'
+    branches: 
+      - main
+      - development
+  pull_request:
+    paths: 
+      - 'FHIR-Implementation-Guide/**'
+    branches: 
+      - main
+      - development
+
+env:
+  REGISTRY: ghcr.io
+  # The destination of the build artifact
+  CONTENT_PATH: ./FHIR-Implementation-Guide
+  IMAGE_NAME: ${{ github.repository }}.FHIR-IG
+  TAG_PREFIX: "IG_"
+  CONTAINER_DESCRIPTION: "Implementation Guide for QuestionAid"
+
+jobs:
+  build_docker_file:
+    concurrency: 
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Find tag
+        id: tag-creation
+        uses: ./.github/actions/tag
+        with:
+          workflow-dispatch-tag: ${{ inputs.tag }}
+          git-tag: ${{ github.ref }}
+          prefix: ${{ env.TAG_PREFIX }}
+
+        # https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
+        # https://fluxcd.io/docs/guides/sortable-image-tags/#example-of-a-build-process-with-timestamp-tagging
+      - name: Downcase image name, and create build version
+        id: buildid
+        env:
+          name: ${{ env.IMAGE_NAME }}
+        run: |
+          echo "imageOutput=${name,,}" >> ${GITHUB_OUTPUT}
+          echo "tagOutput=${{ steps.tag-creation.outputs.tag }}" >> ${GITHUB_OUTPUT}
+          echo "buildOutput=${GITHUB_SHA::8}-$(date +'%Y%m%d-%H%M%S')" >> ${GITHUB_OUTPUT}
+
+      - name: Set up Docker Buildx #https://github.com/marketplace/actions/build-and-push-docker-images
+        uses: docker/setup-buildx-action@v2 #https://github.com/docker/setup-buildx-action
+        with:
+          install: true
+    
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ steps.buildid.outputs.imageOutput }}
+          tags: |
+            type=raw,${{ steps.buildid.outputs.buildOutput }}
+            type=raw,${{ steps.buildid.outputs.tagOutput }}
+            type=semver,pattern={{version}},value=${{ steps.buildid.outputs.tagOutput }}
+          labels: |
+            org.opencontainers.image.title=${{ steps.buildid.outputs.imageOutput }}
+            org.opencontainers.image.description=${{ env.CONTAINER_DESCRIPTION }}
+            org.opencontainers.image.version=${{ steps.buildid.outputs.tagOutput }}
+
+      - name: Login to Docker image registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        id: docker_build
+        uses: docker/build-push-action@v4
+        with:
+          context: ${{ env.CONTENT_PATH }}
+          file: ${{ env.CONTENT_PATH }}/DockerfileCi
+          build-args: DIST_PATH=${{ env.CONTENT_PATH }}
+          push: ${{ steps.buildid.outputs.tagOutput != '' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha, scope=${{ github.workflow }}
+          cache-to: type=gha, scope=${{ github.workflow }}
+
+        # https://github.com/aquasecurity/trivy-action#inputs
+      - name: Run Trivy vulnerability scanner
+        if: ${{ steps.buildid.outputs.tagOutput != '' }}
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ steps.buildid.outputs.imageOutput }}:${{ steps.buildid.outputs.tagOutput }}
+          format: "table"
+          #        exit-code: '1' # comment out if you want failed builds upon security issues
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
+          output: "trivy-results.sarif"
+        env:
+          TRIVY_USERNAME: ${{ github.repository_owner }}
+          TRIVY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          
+        # https://github.com/ncipollo/release-action
+        # Insert content into the body of the release text
+      - name: Create release
+        if: ${{ steps.buildid.outputs.tagOutput != '' }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.TAG_PREFIX }}${{ steps.buildid.outputs.tagOutput }}
+          body: ${{ github.event.head_commit.message }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true

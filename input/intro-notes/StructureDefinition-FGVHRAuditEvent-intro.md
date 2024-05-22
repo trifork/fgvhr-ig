@@ -1,0 +1,1 @@
+AuditEvents used by this implementation guide are intended to be further processed by MinLog.

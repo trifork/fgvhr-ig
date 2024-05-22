@@ -14,25 +14,19 @@ on:
       - ig_*
       - Ig_*
       - IG_*
-    paths: 
-      - 'FHIR-Implementation-Guide/**'
     branches: 
       - main
-      - development
   pull_request:
-    paths: 
-      - 'FHIR-Implementation-Guide/**'
     branches: 
       - main
-      - development
 
 env:
   REGISTRY: ghcr.io
   # The destination of the build artifact
-  CONTENT_PATH: ./FHIR-Implementation-Guide
-  IMAGE_NAME: ${{ github.repository }}.FHIR-IG
+  CONTENT_PATH: ./F
+  IMAGE_NAME: ${{ github.repository }}
   TAG_PREFIX: "IG_"
-  CONTAINER_DESCRIPTION: "Implementation Guide for QuestionAid"
+  CONTAINER_DESCRIPTION: "Implementation Guide for FGVH"
 
 jobs:
   build_docker_file:
@@ -95,7 +89,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ${{ env.CONTENT_PATH }}
-          file: ${{ env.CONTENT_PATH }}/DockerfileCi
+          file: ${{ env.CONTENT_PATH }}/Dockerfile
           build-args: DIST_PATH=${{ env.CONTENT_PATH }}
           push: ${{ steps.buildid.outputs.tagOutput != '' }}
           tags: ${{ steps.meta.outputs.tags }}

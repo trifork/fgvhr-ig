@@ -1,4 +1,4 @@
-Please note that all searches are to be conducted using `POST`-style searches, e.g.:
+Please note that all searches are to be conducted using `POST`-style searches, as GET has been requested to not be supported - e.g.:
 
 ```
 curl --location 'http://localhost:8080/fhir/Consent/_search' \

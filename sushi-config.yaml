@@ -6,8 +6,8 @@
 id: com.trifork.fgvhr
 canonical: http://example.org
 name: fgvhrIG
-# title: Example Title
-# description: Example Implementation Guide for getting started with SUSHI
+title: Danish Advanced Directives for Do Not Resuscitate (DNR) - Implementation Guide
+# description:  
 status: draft # draft | active | retired | unknown
 version: 0.1.0
 fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html

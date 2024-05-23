@@ -55,7 +55,7 @@ Usage: #example
 * patient.identifier.value = "0101521114"
 * dateTime = "2023-10-20T12:42:43+02:00"
 * sourceReference.type = "Consent"
-* sourceReference.identifier.id = "7b1bcb3d-6edc-4855-808d-7bf7f65c7703"
+* sourceReference.identifier.value = "7b1bcb3d-6edc-4855-808d-7bf7f65c7703"
 * sourceReference.identifier.use = #official
 * sourceReference.identifier.system = "urn:oid:1.2.208.184"
 * sourceReference.identifier.assigner.display = "MedCom"

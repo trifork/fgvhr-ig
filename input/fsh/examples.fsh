@@ -18,7 +18,7 @@ Usage: #example
 * outcomeDesc = "AuditEvent"
 * agent.role = $v3-RoleClass#PROV
 * agent.who.identifier.system = "http://rm.dk/bsk"
-* agent.who.identifier.value = "00FD345"
+* agent.who.identifier.value = "ACFFEW"
 * agent.who.type = "Practitioner"
 * agent.who.display = "Chris Christiansen"
 * agent.altId = "a784da10-d1c9-4de6-bcae-9a189d97bc4a"

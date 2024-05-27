@@ -13,6 +13,7 @@ Alias: $consentcategorycodes = http://terminology.hl7.org/CodeSystem/consentcate
 
 Instance: CapabilityStatementInterface
 InstanceOf: CapabilityStatement
+Description: "What the Implementation Guide is capable of handling"
 Usage: #definition
 * name = "RestServer"
 * status = #active
@@ -29,10 +30,12 @@ Usage: #definition
 * format[+] = #application/fhir+json
 * format[+] = #json
 * rest.mode = #server
+
 * rest.resource[0].type = #AuditEvent
 * rest.resource[=].profile = "http://hl7.org/fhir/StructureDefinition/AuditEvent"
 * rest.resource[=].interaction.code = #create
 * rest.resource[=].conditionalCreate = false
+
 * rest.resource[+].type = #Consent
 * rest.resource[=].profile = "http://hl7.org/fhir/StructureDefinition/Consent"
 * rest.resource[=].interaction.code = #search-type

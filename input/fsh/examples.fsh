@@ -6,6 +6,7 @@ Alias: $object-role = http://terminology.hl7.org/CodeSystem/object-role
 
 Instance: cpr-identifier-example
 InstanceOf: AuditEvent
+Description: "An audit event for getting data on a Patient"
 Usage: #example
 * meta.versionId = "1"
 * meta.lastUpdated = "2024-05-22T09:17:53.425+00:00"
@@ -69,9 +70,9 @@ Usage: #example
 //Patient whom's data was accessed
 * entity[+].what.identifier.system = "urn:oid:1.2.208.176.1.2"
 * entity[=].what.identifier.value = "0108589995"
-* entity[=].what.type = "Patient"
+* entity[=].what.type = "Consent"
 * entity[=].role = $object-role#1
-* entity[=].name = "Patient"
+* entity[=].name = "A Patient's Consents"
 * entity[=].description = "Patient det drejer sig om"
 
 

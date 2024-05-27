@@ -63,6 +63,7 @@ Usage: #example
 * agent[=].name = "Ambulance personale"
 * agent[=].requestor = false
 
+//The calling system
 * source.observer.identifier.system = "urn:logis:audit/source"
 * source.observer.identifier.value = "Logis Region Midt"
 * source.type = $security-source-type#4 "Application Server"
@@ -71,13 +72,14 @@ Usage: #example
 * entity[+].what.identifier.system = "urn:oid:1.2.208.176.1.2"
 * entity[=].what.identifier.value = "0108589995"
 * entity[=].what.type = "Consent"
-* entity[=].role = $object-role#1
+* entity[=].role = $object-role#4
 * entity[=].name = "A Patient's Consents"
-* entity[=].description = "Patient det drejer sig om"
+* entity[=].description = "Patient Consents from the search query"
 
 
 Instance: non-profiled-consent
 InstanceOf: Consent
+Description: "Response object when calling for Consents of a Patient"
 Usage: #example
 * meta.lastUpdated = "2024-05-17T07:54:58.849+02:00"
 * identifier.use = #official

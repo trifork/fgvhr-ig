@@ -5,35 +5,35 @@ Alias: $security-source-type = http://terminology.hl7.org/CodeSystem/security-so
 Alias: $object-role = http://terminology.hl7.org/CodeSystem/object-role
 
 
-Instance: bsk-identifier-example
-InstanceOf: AuditEvent
-Usage: #example
-* meta.versionId = "1"
-* meta.lastUpdated = "2024-05-22T09:17:53.425+00:00"
-* type = $audit-event-type#rest "RESTful Operation"
-* subtype = $restful-interaction#create
-* action = #C
-* recorded = "2024-05-22T09:17:52.709+00:00"
-* outcome = #0
-* outcomeDesc = "AuditEvent"
-* agent.role = $v3-RoleClass#PROV
-* agent.who.identifier.system = "http://rm.dk/bsk"
-* agent.who.identifier.value = "ACFFEW"
-* agent.who.type = "Practitioner"
-* agent.who.display = "Chris Christiansen"
-* agent.altId = "a784da10-d1c9-4de6-bcae-9a189d97bc4a"
-* agent.requestor = true
-* source.observer.identifier.system = "urn:trifork:audit/source"
-* source.observer.identifier.value = "eir-orchestrator"
-* source.type = $security-source-type#4
-* entity[0].what.identifier.system = "urn:trifork:audit:otel/trace"
-* entity[=].what.identifier.value = "6860b86b78dc73af887ceb3146bc676c"
-* entity[=].type = $security-source-type#2 "Data Interface"
-* entity[=].role = $object-role#21 "Job Stream"
-* entity[+].what.identifier.system = "urn:oid:1.2.208.176.1.2"
-* entity[=].what.identifier.value = "0108589995"
-* entity[=].what.type = "Patient"
-* entity[=].role = $object-role#1
+// Instance: bsk-identifier-example
+// InstanceOf: AuditEvent
+// Usage: #example
+// * meta.versionId = "1"
+// * meta.lastUpdated = "2024-05-22T09:17:53.425+00:00"
+// * type = $audit-event-type#rest "RESTful Operation"
+// * subtype = $restful-interaction#create
+// * action = #C
+// * recorded = "2024-05-22T09:17:52.709+00:00"
+// * outcome = #0
+// * outcomeDesc = "AuditEvent"
+// * agent.role = $v3-RoleClass#PROV
+// * agent.who.identifier.system = "http://rm.dk/bsk"
+// * agent.who.identifier.value = "ACFFEW"
+// * agent.who.type = "Practitioner"
+// * agent.who.display = "Chris Christiansen"
+// * agent.altId = "a784da10-d1c9-4de6-bcae-9a189d97bc4a"
+// * agent.requestor = true
+// * source.observer.identifier.system = "urn:trifork:audit/source"
+// * source.observer.identifier.value = "fgvh-audit-logger"
+// * source.type = $security-source-type#4
+// * entity[0].what.identifier.system = "urn:trifork:audit:otel/trace"
+// * entity[=].what.identifier.value = "6860b86b78dc73af887ceb3146bc676c"
+// * entity[=].type = $security-source-type#2 "Data Interface"
+// * entity[=].role = $object-role#21 "Job Stream"
+// * entity[+].what.identifier.system = "urn:oid:1.2.208.176.1.2"
+// * entity[=].what.identifier.value = "0108589995"
+// * entity[=].what.type = "Patient"
+// * entity[=].role = $object-role#1
 
 Instance: cpr-identifier-example
 InstanceOf: AuditEvent
@@ -46,24 +46,56 @@ Usage: #example
 * recorded = "2024-05-22T09:17:52.709+00:00"
 * outcome = #0
 * outcomeDesc = "AuditEvent"
-* agent.role = $v3-RoleClass#PROV
-* agent.who.identifier.system = "urn:oid:1.2.208.176.1.2"
-* agent.who.identifier.value = "0202820103"
-* agent.who.type = "Practitioner"
-* agent.who.display = "Chris Christiansen"
-* agent.altId = "a784da10-d1c9-4de6-bcae-9a189d97bc4a"
-* agent.requestor = true
-* source.observer.identifier.system = "urn:trifork:audit/source"
-* source.observer.identifier.value = "eir-orchestrator"
-* source.type = $security-source-type#4
-* entity[0].what.identifier.system = "urn:trifork:audit:otel/trace"
+
+* agent[0].role = $v3-RoleClass#PROV
+* agent[=].who.identifier.system = "urn:oid:1.2.208.176.1.2"
+* agent[=].who.identifier.value = "0202820103"
+* agent[=].who.type = "Practitioner"
+* agent[=].who.display = "Chris Christiansen"
+* agent[=].altId = "a784da10-d1c9-4de6-bcae-9a189d97bc4a"
+* agent[=].requestor = true
+
+* agent[+].role = $v3-RoleClass#AGNT
+* agent[=].who.identifier.system = "<LogisSorCode>"
+* agent[=].who.identifier.value = "123456789012"
+* agent[=].who.type = "System"
+* agent[=].who.display = "Logis Region Midt"
+* agent[=].requestor = false
+
+* source.observer.identifier.system = "urn:logis:audit/source"
+* source.observer.identifier.value = "Logis Region Midt"
+* source.type = $security-source-type#4 "Application Server"
+
+* entity[0].what.identifier.system = "urn:logis:audit/trace"
 * entity[=].what.identifier.value = "6860b86b78dc73af887ceb3146bc676c"
 * entity[=].type = $security-source-type#2 "Data Interface"
 * entity[=].role = $object-role#21 "Job Stream"
+* entity[=].name = "Alarmcentral"
+
+* entity[+].what.identifier.system = "urn:logis:audit:otel/trace"
+* entity[=].what.identifier.value = "6860b86b78dc73af887ceb3146bc676c"
+* entity[=].type = $security-source-type#1 "User Device"
+* entity[=].role = $object-role#9 "Subscriber"
+* entity[=].name = "Ambulance"
+
 * entity[+].what.identifier.system = "urn:oid:1.2.208.176.1.2"
 * entity[=].what.identifier.value = "0108589995"
 * entity[=].what.type = "Patient"
 * entity[=].role = $object-role#1
+* entity[=].name = "Patient"
+
+* entity[+].what.identifier.system = "urn:oid:1.2.208.176.1.2"
+* entity[=].what.identifier.value = "0108589995"
+* entity[=].what.type = "Practitioner"
+* entity[=].role = $object-role#15 "Practitioner"
+* entity[=].name = "Ambulance personale"
+
+* entity[+].what.identifier.system = "BSK-system"
+* entity[=].what.identifier.value = "BSK/123"
+* entity[=].what.type = "Practitioner"
+* entity[=].role = $object-role#15 "Practitioner"
+* entity[=].name = "Ambulance personale"
+
 
 Instance: non-profiled-consent
 InstanceOf: Consent

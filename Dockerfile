@@ -56,6 +56,14 @@ WORKDIR /src
 # Handle Jekyll error because it can't create the following folder
 RUN mkdir ./temp/pages/.jekyll-cache ./output -p
 
+COPY . .
+
+# Allow the following .sh files to be executed
+RUN chmod u+x ./_downloadPublisher.sh ./_genonce.sh
+
+# Download the fhir-ig-publisher
+RUN ./_downloadPublisher.sh
+
 
 
 # Make it skip installation process, because it's always the same
@@ -68,11 +76,8 @@ RUN npm install -g fsh-sushi@${FSH_SUSHI_VERSION}
 # Copy all allowed content to the root directory
 COPY . .
 
-# Allow the following .sh files to be executed
-RUN chmod u+x ./_downloadPublisher.sh ./_genonce.sh
 
 # Update the publisher to the newest version, so it is ready to run on command
-RUN ./_downloadPublisher.sh
 RUN ./_genonce.sh
 
 

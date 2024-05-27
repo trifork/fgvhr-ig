@@ -1,7 +1,7 @@
 #!/bin/bash
 publisher_jar=publisher.jar
 publisher=./input-cache/${publisher_jar}
-version=1.6.9
+version=1.6.10
 
 # If publisher.jar is not found in cache folder, download it
 if [ ! -f "$publisher" ]; then

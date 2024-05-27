@@ -1,8 +1,8 @@
 .DS_Store
 Thumbs.db
 /fsh-generated
-/input-cache
-/input-cache/*
+/input-cache/*.jar
+!/input-cache/.gitkeep
 /output
 /temp
 /template

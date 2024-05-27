@@ -4,37 +4,6 @@ Alias: $v3-RoleClass = http://terminology.hl7.org/CodeSystem/v3-RoleClass
 Alias: $security-source-type = http://terminology.hl7.org/CodeSystem/security-source-type
 Alias: $object-role = http://terminology.hl7.org/CodeSystem/object-role
 
-
-// Instance: bsk-identifier-example
-// InstanceOf: AuditEvent
-// Usage: #example
-// * meta.versionId = "1"
-// * meta.lastUpdated = "2024-05-22T09:17:53.425+00:00"
-// * type = $audit-event-type#rest "RESTful Operation"
-// * subtype = $restful-interaction#create
-// * action = #C
-// * recorded = "2024-05-22T09:17:52.709+00:00"
-// * outcome = #0
-// * outcomeDesc = "AuditEvent"
-// * agent.role = $v3-RoleClass#PROV
-// * agent.who.identifier.system = "http://rm.dk/bsk"
-// * agent.who.identifier.value = "ACFFEW"
-// * agent.who.type = "Practitioner"
-// * agent.who.display = "Chris Christiansen"
-// * agent.altId = "a784da10-d1c9-4de6-bcae-9a189d97bc4a"
-// * agent.requestor = true
-// * source.observer.identifier.system = "urn:trifork:audit/source"
-// * source.observer.identifier.value = "fgvh-audit-logger"
-// * source.type = $security-source-type#4
-// * entity[0].what.identifier.system = "urn:trifork:audit:otel/trace"
-// * entity[=].what.identifier.value = "6860b86b78dc73af887ceb3146bc676c"
-// * entity[=].type = $security-source-type#2 "Data Interface"
-// * entity[=].role = $object-role#21 "Job Stream"
-// * entity[+].what.identifier.system = "urn:oid:1.2.208.176.1.2"
-// * entity[=].what.identifier.value = "0108589995"
-// * entity[=].what.type = "Patient"
-// * entity[=].role = $object-role#1
-
 Instance: cpr-identifier-example
 InstanceOf: AuditEvent
 Usage: #example
@@ -47,54 +16,63 @@ Usage: #example
 * outcome = #0
 * outcomeDesc = "AuditEvent"
 
-* agent[0].role = $v3-RoleClass#PROV
+//The individual who takes the call, and makes the request
+* agent[0].role = $v3-RoleClass#AGNT
 * agent[=].who.identifier.system = "urn:oid:1.2.208.176.1.2"
 * agent[=].who.identifier.value = "0202820103"
-* agent[=].who.type = "Practitioner"
-* agent[=].who.display = "Chris Christiansen"
-* agent[=].altId = "a784da10-d1c9-4de6-bcae-9a189d97bc4a"
+* agent[=].who.type = "PractitionerRole"
+* agent[=].who.display = "Terry Telefonmand"
+* agent[=].name = "Dispatcher"
 * agent[=].requestor = true
 
-* agent[+].role = $v3-RoleClass#AGNT
-* agent[=].who.identifier.system = "<LogisSorCode>"
-* agent[=].who.identifier.value = "123456789012"
+//The system handling the request for the Agent
+* agent[+].role = $v3-RoleClass#PROV
+* agent[=].who.identifier.system = "urn:oid:1.2.208.176.1.1"
+* agent[=].who.identifier.value = "615961000016003"
 * agent[=].who.type = "System"
-* agent[=].who.display = "Logis Region Midt"
+* agent[=].who.display = "SOR-kode for Logis Region Midt"
+* agent[=].type = $security-source-type#2 "Data Interface"
+* agent[=].name = "AMK Vagtcentral"
+* agent[=].requestor = false
+
+//Ambulance which receives the data
+* agent[+].role = $v3-RoleClass#PROV
+* agent[=].who.identifier.system = "urn:logis:audit:otel/trace"
+* agent[=].who.identifier.value = "6860b86b78dc73af887ceb3146bc676c"
+* agent[=].who.display = "Skærm, som viser information til ambulancefolk"
+* agent[=].type = $security-source-type#1 "User Device"
+* agent[=].name = "Ambulance"
+* agent[=].requestor = false
+
+//If CPR of Practitioner is known
+* agent[+].role = $v3-RoleClass#LIC
+* agent[=].who.identifier.system = "urn:oid:1.2.208.176.1.2"
+* agent[=].who.identifier.value = "0108589995"
+* agent[=].who.type = "Practitioner"
+* agent[=].who.display = "Personale 1, som rykkede ud"
+* agent[=].name = "Ambulance personale"
+* agent[=].requestor = false
+
+//If CPR of Practitioner is not known
+* agent[+].role = $v3-RoleClass#LIC
+* agent[=].who.identifier.system = "BSK-system"
+* agent[=].who.identifier.value = "BSK/123"
+* agent[=].who.type = "Practitioner"
+* agent[=].who.display = "Personale 2, som rykkede ud. Vedkommende er ikke kendt med CPR-nummer ved indmelding."
+* agent[=].name = "Ambulance personale"
 * agent[=].requestor = false
 
 * source.observer.identifier.system = "urn:logis:audit/source"
 * source.observer.identifier.value = "Logis Region Midt"
 * source.type = $security-source-type#4 "Application Server"
 
-* entity[0].what.identifier.system = "urn:logis:audit/trace"
-* entity[=].what.identifier.value = "6860b86b78dc73af887ceb3146bc676c"
-* entity[=].type = $security-source-type#2 "Data Interface"
-* entity[=].role = $object-role#21 "Job Stream"
-* entity[=].name = "Alarmcentral"
-
-* entity[+].what.identifier.system = "urn:logis:audit:otel/trace"
-* entity[=].what.identifier.value = "6860b86b78dc73af887ceb3146bc676c"
-* entity[=].type = $security-source-type#1 "User Device"
-* entity[=].role = $object-role#9 "Subscriber"
-* entity[=].name = "Ambulance"
-
+//Patient whom's data was accessed
 * entity[+].what.identifier.system = "urn:oid:1.2.208.176.1.2"
 * entity[=].what.identifier.value = "0108589995"
 * entity[=].what.type = "Patient"
 * entity[=].role = $object-role#1
 * entity[=].name = "Patient"
-
-* entity[+].what.identifier.system = "urn:oid:1.2.208.176.1.2"
-* entity[=].what.identifier.value = "0108589995"
-* entity[=].what.type = "Practitioner"
-* entity[=].role = $object-role#15 "Practitioner"
-* entity[=].name = "Ambulance personale"
-
-* entity[+].what.identifier.system = "BSK-system"
-* entity[=].what.identifier.value = "BSK/123"
-* entity[=].what.type = "Practitioner"
-* entity[=].role = $object-role#15 "Practitioner"
-* entity[=].name = "Ambulance personale"
+* entity[=].description = "Patient det drejer sig om"
 
 
 Instance: non-profiled-consent

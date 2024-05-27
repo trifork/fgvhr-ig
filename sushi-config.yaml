@@ -3,9 +3,9 @@
 # │  used properties are included. For a list of all supported properties and their functions,     │
 # │  see: https://fshschool.org/docs/sushi/configuration/.                                         │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
-id: com.trifork.fgvhr
+id: com.trifork.fgvh
 canonical: http://example.org
-name: fgvhrIG
+name: fgvhIG
 title: Danish Advanced Directives for Do Not Resuscitate (DNR) - Implementation Guide
 # description:  
 status: draft # draft | active | retired | unknown
@@ -79,6 +79,8 @@ dependencies:
 menu:
   Home: index.html
   Artifacts: artifacts.html
+  Examples: 
+    Consent Search: example-consent-search.html
 
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │

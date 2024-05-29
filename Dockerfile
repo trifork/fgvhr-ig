@@ -16,10 +16,11 @@ COPY ./nginx/security-headers.conf /etc/nginx/security-headers.conf
 RUN chown -R 1000: /etc/nginx/conf.d/default.conf
 
 
-
+############
 # Use Ruby as build. It will not be published, but will 
 # generate files to /output
 FROM ruby:3.2 as build
+ARG FSH_SUSHI_VERSION=3.10.0
 
 # https://github.com/inadarei/alpine-jekyll/blob/master/Dockerfile
 RUN gem install --no-document \
@@ -64,12 +65,6 @@ RUN chmod u+x ./_downloadPublisher.sh ./_genonce.sh
 # Download the fhir-ig-publisher
 RUN ./_downloadPublisher.sh
 
-
-
-# Make it skip installation process, because it's always the same
-FROM build as worker
-ARG FSH_SUSHI_VERSION=3.10.0
-
 # add the sushi tool
 RUN npm install -g fsh-sushi@${FSH_SUSHI_VERSION}
 
@@ -80,13 +75,24 @@ COPY . .
 # Update the publisher to the newest version, so it is ready to run on command
 RUN ./_genonce.sh
 
+#############  Make it skip installation process, because it's always the same
+# FROM ig-base:local as worker
 
+# WORKDIR /src
+
+# # Copy all allowed content to the root directory
+# COPY . .
+
+
+# # Update the publisher to the newest version, so it is ready to run on command
+# RUN ./_genonce.sh
 
 
 FROM base AS final
 
 # Get files to be served
-COPY --from=worker ./src/output /usr/share/nginx/html
+COPY --from=build ./src/output /usr/share/nginx/html
+# COPY --from=worker ./src/output /usr/share/nginx/html
 
 # Change to user 1000
 USER 1000

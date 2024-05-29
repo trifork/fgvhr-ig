@@ -1,10 +1,12 @@
 Profile: FGVHAuditEvent
 Parent: IHE.BasicAudit.PatientCreate
-Description: "AuditEvents to be sent to MinLog"
+Id: fgvh-audit-event
+// Description: "AuditEvents to be sent to MinLog"
 
 Profile: FGVHConsent
 Parent: Consent
-Description: "Consents as they will be seen from Logis"
+Id: fgvh-consent
+// Description: "Consents as they will be seen from Logis"
 
 Alias: $consentscope = http://terminology.hl7.org/CodeSystem/consentscope
 Alias: $consentcategorycodes = http://terminology.hl7.org/CodeSystem/consentcategorycodes

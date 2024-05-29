@@ -9,7 +9,7 @@ name: fgvhIG
 title: Danish Advanced Directives for Do Not Resuscitate (DNR) - Implementation Guide
 # description:  
 status: draft # draft | active | retired | unknown
-version: 0.1.3
+version: 0.2.0
 fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html
 copyrightYear: 2024+
 releaseLabel: ci-build # ci-build | draft | qa-preview | ballot | trial-use | release | update | normative+trial-use
@@ -79,8 +79,6 @@ dependencies:
 menu:
   Home: index.html
   Artifacts: artifacts.html
-  Examples: 
-    Consent Search: example-consent-search.html
 
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │
